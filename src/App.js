@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import AppMenu from './AppMenu';
+
 class App extends Component {
     state = { loading: false };
 
@@ -22,7 +24,8 @@ class App extends Component {
                 <p>{ this.state.loading.toString() }</p>
                 <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+                </p>
+                <AppMenu />
             </div>
         );
     }

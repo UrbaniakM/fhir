@@ -2,7 +2,10 @@
     "name": "fhir",
     "dependencies": {
         "react": "^15.5.4",
-        "react-dom": "^15.5.4"
+        "react-dom": "^15.5.4",
+        "react-icons-kit": "^1.1.5",
+        "react-router-dom": "^4.2.2",
+        "react-scripts": "^1.1.4"
     },
     "version": "0.1.0",
     "devDependencies": {
@@ -30,7 +33,7 @@
         "webpack-dev-server": "^2.4.5"
     },
     "scripts": {
-        "start": "node scripts/start.js",
+        "start": "react-scripts start",
         "build": "export NODE_ENV=production && rm -rf ./build && webpack --env.production --optimize-minimize"
     }
 }
