@@ -1,6 +1,7 @@
 {
     "name": "fhir",
     "dependencies": {
+        "axios": "^0.18.0",
         "react": "^15.5.4",
         "react-dom": "^15.5.4",
         "react-icons-kit": "^1.1.5",
