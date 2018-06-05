@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { Link } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 import './PatientsList.css';
 
-export default class PatientsList extends Component {
+class PatientsList extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -15,9 +16,9 @@ export default class PatientsList extends Component {
 	}
 
 	componentDidMount() {
-		axios.get('http://fhirtest.uhn.ca/baseDstu2/Patient')
+		axios.get('http://localhost:8090/baseDstu3/Patient?_count=25&_elements=name,meta,id')
 			.then(res => {
-				console.log(res);
+                console.log(res.data.entry);
 				this.setState({
 					entries: res.data.entry,
 					loaded: true
@@ -30,9 +31,12 @@ export default class PatientsList extends Component {
 	}
 
 	rowClick = (id) => {
-		console.log(id);
-		// TODO: push history
+        this.props.history.push('/patient/'+id);
 	}
+
+    capitalizeFirstLetter = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 	
 	render () {
 		if(!this.state.loaded){
@@ -40,13 +44,34 @@ export default class PatientsList extends Component {
 		}
 		const patients = [];
 		this.state.entries.map( (entry, i) => {
+            let patientName = [];
+            let familyName = [];
+            if( entry.resource.name[0].given) {
+                entry.resource.name[0].given.map( (el) => {
+                    patientName.push( this.capitalizeFirstLetter(el.toLowerCase()) );
+                });
+            }
+            if( entry.resource.name[0].family) {
+                if(Array.isArray(entry.resource.name[0].family)){
+                    entry.resource.name[0].family.map( (el) => {
+                        familyName.push( this.capitalizeFirstLetter(el.toLowerCase()) );
+                    });
+                }
+                else {
+                    familyName.push( this.capitalizeFirstLetter(entry.resource.name[0].family.toLowerCase()) );
+                }
+            }
+            patientName = patientName.join(' ');
+            familyName = familyName.join(' ');
 			patients.push(
 				<tr key={i} onClick={() => { this.rowClick(entry.resource.id)} }>
-				 <td><Link to={'/patient/'+entry.resource.id}>{entry.resource.id}</Link></td>	
+                    <td className="id-cell">{entry.resource.id}</td>	
 					<td>
-						{entry.resource.name[0].given}{' '}
-						{entry.resource.name[0].family.join(' ')}
+						{patientName}
 					</td>
+                    <td>
+                        {familyName}
+                    </td>
 					<td>{new Intl.DateTimeFormat('en-GB', { 
     						year: 'numeric', 
     						month: 'long', 
@@ -63,6 +88,7 @@ export default class PatientsList extends Component {
 						<tr>
 							<th>id</th>
 							<th>Name</th>
+                            <th>Family name</th>
 							<th>Last updated</th>
 						</tr>
 					</thead>
@@ -74,4 +100,6 @@ export default class PatientsList extends Component {
 		);
 	}
 }
+
+export default withRouter(PatientsList);
 

@@ -4,9 +4,6 @@ import {
   Route,
 } from 'react-router-dom';
 
-import Icon from 'react-icons-kit';
-import { user } from 'react-icons-kit/icomoon';
-
 import PatientsList from './Resources/PatientsList';
 import Patient from './Resources/Patient';
 

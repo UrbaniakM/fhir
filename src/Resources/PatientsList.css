@@ -21,3 +21,13 @@ th, td {
 tbody tr:hover {
   background-color: #f5f5f5;
 }
+
+.id-cell {
+  max-width : 150px; 
+  white-space : nowrap;
+  overflow : hidden;
+}
+
+.id-cell:hover {
+  overflow: auto;
+}

@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import fontawesome from '@fortawesome/fontawesome'
+import solid from '@fortawesome/fontawesome-free-solid'
+
 import AppMenu from './AppMenu';
+
+fontawesome.library.add(solid);
 
 class App extends Component {
     render() {
