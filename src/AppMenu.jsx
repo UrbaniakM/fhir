@@ -11,7 +11,7 @@ export default class AppMenu extends Component {
 	render() {
 		return (
 			<Router>
-				<div className="App-menu">
+				<div className="App-content">
 				    	<Route exact path="/" component={PatientsList} />
 					<Route path="/patient/:id" component={Patient} />
 				</div>

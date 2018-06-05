@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+
+import ResourcesList from './ResourcesList.jsx';
 
 class Patient extends Component {
 	constructor(props){
@@ -21,7 +23,8 @@ class Patient extends Component {
 				this.setState({
 					patient: res.data.entry[0].resource,
                     resources: res.data.entry.slice(1),
-					loaded: true
+					loaded: true,
+                    resourcesList: ' '
 				});
 			});
 	}
@@ -32,6 +35,16 @@ class Patient extends Component {
 
     capitalizeFirstLetter = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    renderResource = (option) => {
+        let resources = ' ';
+        if(option === 'observations'){
+            resources = <ResourcesList patient={this.props.match.params.id} />
+        }
+        this.setState({
+            resourcesList: resources
+        });
     }
 
 	render() {
@@ -69,7 +82,12 @@ class Patient extends Component {
                     <div className="Birth-date">{birthDate}</div>
                     <div className="Patient-name">{patientName}</div>
                 </div>
-                <FontAwesomeIcon icon="bed" />
+                <button onClick={() => this.renderResource('observations') }><FontAwesomeIcon icon="stethoscope"/> Observations</button>
+                <button onClick={() => this.renderResource('medications') }><FontAwesomeIcon icon="pills" /> Medications</button>
+                <button onClick={() => this.renderResource('medicationrequests') }><FontAwesomeIcon icon="file-alt" /> Medication Requests</button>
+                <div className="Resources-list">
+                    {this.state.resourcesList}
+                </div>
 			</div>
 		);
 	}
