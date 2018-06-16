@@ -14,10 +14,14 @@ class ResourcesList extends Component {
 	}
 
 	componentDidMount() {
-		console.log('http://localhost:8090/baseDstu3/' + this.props.resourceType + '?patient=' + this.props.patient + '&_sort=' + 'date' + '&_count=50')
-		axios.get('http://localhost:8090/baseDstu3/' + this.props.resourceType + '?patient=' + this.props.patient + '&_sort=' + 'date' + '&_count=50')
+		console.log('http://localhost:8090/baseDstu3/' + this.props.resourceType + '?patient=' + this.props.patient + this.props.query)
+		axios.get('http://localhost:8090/baseDstu3/' + this.props.resourceType + '?patient=' + this.props.patient + this.props.query)
 			.then(res => {
-                console.log(res.data.entry);
+				console.log(res.data.entry);
+				const entries = [];
+				res.data.entry.map( (entry) => {
+					//let 
+				});
 				this.setState({
 					entries: res.data.entry,
 					loaded: true

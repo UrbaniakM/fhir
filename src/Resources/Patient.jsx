@@ -40,11 +40,10 @@ class Patient extends Component {
     renderResource = (option) => {
         let resources = ' ';
         if(option === 'observations'){
-            resources = <ResourcesList patient={this.props.match.params.id} resourceType="Observation" query='' />
+            resources = <ResourcesList patient={this.props.match.params.id} resourceType="Observation" query="&_sort=date&_count=50" />
         }
         else if(option === 'medicationrequests'){
-            console.log('aa')
-            resources = <ResourcesList patient={this.props.match.params.id} resourceType="MedicationRequest" query=''/>
+            resources = <ResourcesList patient={this.props.match.params.id} resourceType="MedicationRequest" query="&_count=50" />
         }
         this.setState({
             resourcesList: resources
