@@ -20,10 +20,20 @@ class ResourcesList extends Component {
 				console.log(res.data.entry);
 				const entries = [];
 				res.data.entry.map( (entry) => {
-					//let 
+					const id = entry.resource.id;
+					let category = 'no category';
+					if(entry.resource.category){
+						category = entry.resource.category[0].coding[0].code;;
+					}
+					let code = 'no code';
+					if(entry.resource.code){
+						code = entry.resource.code.coding[0].display;
+					}
+					const lastUpdated = entry.resource.meta.lastUpdated;
+					entries.push({id, category, code, lastUpdated});
 				});
 				this.setState({
-					entries: res.data.entry,
+					entries,
 					loaded: true
 				});
 		});
@@ -44,11 +54,11 @@ class ResourcesList extends Component {
         let resources = []
         this.state.entries.map( (entry) => {
             resources.push(
-            <tr key={entry.resource.id} onClick={() => { this.rowClick(entry.resource.id)} }>
-                <td>{entry.resource.id}</td>
-                <td>{entry.resource.category[0].coding[0].code}</td>
-                <td>{entry.resource.code.coding[0].display}</td>
-                <td>{entry.resource.meta.lastUpdated}</td>
+            <tr key={entry.id} onClick={() => { this.rowClick(entry.id)} }>
+                <td>{entry.id}</td>
+                <td>{entry.category}</td>
+                <td>{entry.code}</td>
+                <td>{entry.lastUpdated}</td>
             </tr>
             );
             resources = resources.reverse();

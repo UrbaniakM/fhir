@@ -5,6 +5,7 @@ import axios from 'axios';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import ResourcesList from './ResourcesList.jsx';
+import Observation from './Observation';
 
 class Patient extends Component {
 	constructor(props){
@@ -40,10 +41,10 @@ class Patient extends Component {
     renderResource = (option) => {
         let resources = ' ';
         if(option === 'observations'){
-            resources = <ResourcesList patient={this.props.match.params.id} resourceType="Observation" query="&_sort=date&_count=50" />
+            resources = <ResourcesList key='observations' patient={this.props.match.params.id} resourceType="Observation" query="&_sort=date&_count=50" />
         }
         else if(option === 'medicationrequests'){
-            resources = <ResourcesList patient={this.props.match.params.id} resourceType="MedicationRequest" query="&_count=50" />
+            resources = <ResourcesList key='medicationrequests' patient={this.props.match.params.id} resourceType="MedicationRequest" query="&_count=50" />
         }
         this.setState({
             resourcesList: resources
