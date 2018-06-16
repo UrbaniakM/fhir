@@ -40,7 +40,11 @@ class Patient extends Component {
     renderResource = (option) => {
         let resources = ' ';
         if(option === 'observations'){
-            resources = <ResourcesList patient={this.props.match.params.id} />
+            resources = <ResourcesList patient={this.props.match.params.id} resourceType="Observation" query='' />
+        }
+        else if(option === 'medicationrequests'){
+            console.log('aa')
+            resources = <ResourcesList patient={this.props.match.params.id} resourceType="MedicationRequest" query=''/>
         }
         this.setState({
             resourcesList: resources
@@ -83,7 +87,7 @@ class Patient extends Component {
                     <div className="Patient-name">{patientName}</div>
                 </div>
                 <button onClick={() => this.renderResource('observations') }><FontAwesomeIcon icon="stethoscope"/> Observations</button>
-                <button onClick={() => this.renderResource('medications') }><FontAwesomeIcon icon="pills" /> Medications</button>
+                <button onClick={() => this.renderResource('graphs') }><FontAwesomeIcon icon="pills" /> Graphs</button>
                 <button onClick={() => this.renderResource('medicationrequests') }><FontAwesomeIcon icon="file-alt" /> Medication Requests</button>
                 <div className="Resources-list">
                     {this.state.resourcesList}

@@ -14,7 +14,8 @@ class ResourcesList extends Component {
 	}
 
 	componentDidMount() {
-		axios.get('http://localhost:8090/baseDstu3/Observation?patient=' + this.props.patient + '&_sort=' + 'date' + '&_count=50')
+		console.log('http://localhost:8090/baseDstu3/' + this.props.resourceType + '?patient=' + this.props.patient + '&_sort=' + 'date' + '&_count=50')
+		axios.get('http://localhost:8090/baseDstu3/' + this.props.resourceType + '?patient=' + this.props.patient + '&_sort=' + 'date' + '&_count=50')
 			.then(res => {
                 console.log(res.data.entry);
 				this.setState({
@@ -29,7 +30,7 @@ class ResourcesList extends Component {
 	}
 
 	rowClick = (id) => {
-        this.props.history.push('/patient/'+id);
+        this.props.history.push('/' + this.props.resourceType + '/'+id);
 	}
 	
 	render () {
@@ -39,11 +40,11 @@ class ResourcesList extends Component {
         let resources = []
         this.state.entries.map( (entry) => {
             resources.push(
-            <tr key={entry.resource.id}>
+            <tr key={entry.resource.id} onClick={() => { this.rowClick(entry.resource.id)} }>
                 <td>{entry.resource.id}</td>
                 <td>{entry.resource.category[0].coding[0].code}</td>
                 <td>{entry.resource.code.coding[0].display}</td>
-                <td>{entry.resource.effectiveDateTime}</td>
+                <td>{entry.resource.meta.lastUpdated}</td>
             </tr>
             );
             resources = resources.reverse();
