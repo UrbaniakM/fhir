@@ -5,6 +5,7 @@ import axios from 'axios';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import ResourcesList from './ResourcesList.jsx';
+import Observation from './Observation';
 
 class Patient extends Component {
 	constructor(props){

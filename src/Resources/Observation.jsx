@@ -12,20 +12,36 @@ class Observation extends Component {
 
     componentDidMount() {
         // TODO: "More..." button, on click display next events ?_count=xyz
-		axios.get('http://localhost:8090/baseDstu3/Observation/' + this.props.match.params.id + '?_count=25')
+		axios.get('http://localhost:8090/baseDstu3/Observation/' + this.props.match.params.id)
 			.then(res => {
 				console.log(res);
 				this.setState({
-					patient: res.data.entry[0].resource,
-                    resources: res.data.entry.slice(1),
-					loaded: true,
-                    resourcesList: ' '
+                    display: res.data.code.coding.display,
+                    effectiveDateTime: res.data.effectiveDateTime,
+                    category: ' ',
+                    value: res.data.valueQuantity.value + " " + res.data.valueQuantity.unit,
+					loaded: true
 				});
 			});
     }
     
-    render(){
-        return null;
+    render() {
+        return (
+            <div>
+                <div>
+                    {this.state.display}
+                </div>
+                <div>
+                    {this.state.effectiveDateTime}
+                </div>
+                <div>
+                    {this.state.category}
+                </div>
+                <div>
+                    {this.state.value}
+                </div>
+            </div>
+        );
     }
 }
 
