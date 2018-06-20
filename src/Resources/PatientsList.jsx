@@ -58,6 +58,25 @@ class PatientsList extends Component {
 		});
 	}
 
+	renderAllClick = () => {
+		while(this.state.nextPage)
+		{
+			axios.get(this.state.nextPage.url)
+			.then(res => {
+			console.log(res.data.entry);
+			console.log(res.data.link[1]);
+			const entries = this.state.entries.slice();
+			res.data.entry.map(entry => {
+				entries.push(entry);
+			});
+			this.setState({
+				entries,
+				nextPage: res.data.link[1]
+			});
+		});
+		}
+	}
+
 	handleChange(event) {
 		this.setState({filterName: event.target.value});
 		console.log(event.target.value)
@@ -72,9 +91,9 @@ class PatientsList extends Component {
 		let entries = this.state.entries;
 		if(this.state.filterName !== '')
 		{
-			let regEx = new RegExp(this.state.filterName);
+			let regEx = new RegExp('^' + this.state.filterName);
 			entries = this.state.entries.filter((entry) => {
-				return (entry.resource.name[0].given.search(regEx) > -1);
+				return (entry.resource.name[0].given[0].search(regEx) > -1);
 			});
 		}
 		entries.map( (entry, i) => {
@@ -116,8 +135,10 @@ class PatientsList extends Component {
 			);
 		});
 		let button = null;
+		let buttonImportAll = null;
 		if(this.state.nextPage){
 			button = <button key={this.state.nextPage} onClick={() => this.renderMoreClick()} >More...</button>;
+			buttonImportAll = <button key={this.state.nextPage + 'importAll'} onClick={() => this.renderAllClick()} >Import all patients</button>;
 		}
 		return (
 			<div id="Patients-list">
@@ -135,6 +156,7 @@ class PatientsList extends Component {
 					</tbody>
 				</table>
 				{button}
+				{buttonImportAll}
 			</div>
 		);
 	}
