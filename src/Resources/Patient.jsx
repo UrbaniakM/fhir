@@ -5,7 +5,7 @@ import axios from 'axios';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import ResourcesList from './ResourcesList.jsx';
-import Observation from './Observation';
+import GraphsList from './GraphsList.jsx'
 
 class Patient extends Component {
 	constructor(props){
@@ -16,7 +16,6 @@ class Patient extends Component {
 	}
 
 	componentDidMount() {
-        // TODO: "More..." button, on click display next events ?_count=xyz
 		axios.get('http://localhost:8090/baseDstu3/Patient/' + this.props.match.params.id + '/$everything?_count=25')
 			.then(res => {
 				console.log(res.data.entry[0]);
@@ -45,6 +44,9 @@ class Patient extends Component {
         }
         else if(option === 'medicationrequests'){
             resources = <ResourcesList key='medicationrequests' patient={this.props.match.params.id} resourceType="MedicationRequest" query="&_count=50" />
+        }
+        else if(option === 'graphs'){
+            resources = <GraphsList key='graphs' />
         }
         this.setState({
             resourcesList: resources

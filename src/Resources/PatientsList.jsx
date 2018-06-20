@@ -10,8 +10,11 @@ class PatientsList extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			filterName: '',
 			loaded: false
 		}
+
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -54,6 +57,11 @@ class PatientsList extends Component {
 			});
 		});
 	}
+
+	handleChange(event) {
+		this.setState({filterName: event.target.value});
+		console.log(event.target.value)
+	  }
 	
 	render () {
 		if(!this.state.loaded){
@@ -61,7 +69,15 @@ class PatientsList extends Component {
 		}
 		console.log(this.state.entries)
 		const patients = [];
-		this.state.entries.map( (entry, i) => {
+		let entries = this.state.entries;
+		if(this.state.filterName !== '')
+		{
+			let regEx = new RegExp(this.state.filterName);
+			entries = this.state.entries.filter((entry) => {
+				return (entry.resource.name[0].given.search(regEx) > -1);
+			});
+		}
+		entries.map( (entry, i) => {
             let patientName = [];
             let familyName = [];
             if( entry.resource.name[0].given) {
@@ -109,7 +125,7 @@ class PatientsList extends Component {
 					<thead>
 						<tr>
 							<th>id</th>
-							<th>Name</th>
+							<th>Name: <input type="text" name="name" value={this.state.filterName} onChange={this.handleChange} /></th>
                             <th>Family name</th>
 							<th>Last updated</th>
 						</tr>
