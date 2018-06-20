@@ -35,7 +35,11 @@ class Observation extends Component {
                     {this.state.display}
                 </div>
                 <div>
-                    {this.state.effectiveDateTime}
+                    {new Intl.DateTimeFormat('en-GB', { 
+    						year: 'numeric', 
+    						month: 'long', 
+    						day: '2-digit' 
+					}).format(new Date(this.state.effectiveDateTime))}
                 </div>
                 <div>
                     {this.state.category}

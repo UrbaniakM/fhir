@@ -17,9 +17,11 @@ class PatientsList extends Component {
 	componentDidMount() {
 		axios.get('http://localhost:8090/baseDstu3/Patient?_count=25&_elements=name,meta,id')
 			.then(res => {
-                console.log(res.data.entry);
+				console.log(res.data.entry);
+				console.log(res.data.link[1]);
 				this.setState({
 					entries: res.data.entry,
+					nextPage: res.data.link[1],
 					loaded: true
 				});
 			});
@@ -35,12 +37,29 @@ class PatientsList extends Component {
 
     capitalizeFirstLetter = (str) => {
         return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+	}
+	
+	renderMoreClick = () => {
+		axios.get(this.state.nextPage.url)
+		.then(res => {
+			console.log(res.data.entry);
+			console.log(res.data.link[1]);
+			const entries = this.state.entries.slice();
+			res.data.entry.map(entry => {
+				entries.push(entry);
+			});
+			this.setState({
+				entries,
+				nextPage: res.data.link[1]
+			});
+		});
+	}
 	
 	render () {
 		if(!this.state.loaded){
 			return null;
 		}
+		console.log(this.state.entries)
 		const patients = [];
 		this.state.entries.map( (entry, i) => {
             let patientName = [];
@@ -80,6 +99,10 @@ class PatientsList extends Component {
 				</tr>
 			);
 		});
+		let button = null;
+		if(this.state.nextPage){
+			button = <button key={this.state.nextPage} onClick={() => this.renderMoreClick()} >More...</button>;
+		}
 		return (
 			<div id="Patients-list">
 				<table>
@@ -95,6 +118,7 @@ class PatientsList extends Component {
 						{patients}
 					</tbody>
 				</table>
+				{button}
 			</div>
 		);
 	}
